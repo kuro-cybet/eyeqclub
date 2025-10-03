@@ -1,3 +1,4 @@
+import MarqueeBanner from '@/components/MarqueeBanner';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import Section from '@/components/Section';
@@ -12,6 +13,7 @@ import bearer3 from '@/assets/bearer3.jpg';
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <MarqueeBanner />
       <Header />
       <Hero />
       
