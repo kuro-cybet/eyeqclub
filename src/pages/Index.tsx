@@ -1,12 +1,77 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Header from '@/components/Header';
+import Hero from '@/components/Hero';
+import Section from '@/components/Section';
+import BearerCard from '@/components/BearerCard';
+import Footer from '@/components/Footer';
+import { Button } from '@/components/ui/button';
+
+import bearer1 from '@/assets/bearer1.jpg';
+import bearer2 from '@/assets/bearer2.jpg';
+import bearer3 from '@/assets/bearer3.jpg';
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <Header />
+      <Hero />
+      
+      <Section id="about" title="About Us">
+        <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          Innovate • Compete • Collaborate • Grow
+        </p>
+      </Section>
+
+      <Section id="proposal" title="Club Proposal" className="bg-card/30">
+        <p className="text-lg text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+          Our vision is to innovate, collaborate, and empower students through workshops, 
+          competitions, and projects. We aim to build a community of passionate engineers 
+          who are ready to take on the challenges of tomorrow.
+        </p>
+      </Section>
+
+      <Section id="bearers" title="Office Bearers">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+          <BearerCard
+            image={bearer1}
+            title="President"
+            name="John Doe"
+            delay={0}
+          />
+          <BearerCard
+            image={bearer2}
+            title="Vice President"
+            name="Jane Smith"
+            delay={200}
+          />
+          <BearerCard
+            image={bearer3}
+            title="Secretary"
+            name="Alex Johnson"
+            delay={400}
+          />
+        </div>
+      </Section>
+
+      <Section id="updates" title="Daily Works Update" className="bg-card/30">
+        <p className="text-lg text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+          Stay tuned for regular updates, events, and progress reports from our members. 
+          We're constantly working on exciting projects and organizing enriching events!
+        </p>
+      </Section>
+
+      <Section id="join" title="Be Part of the Revolution 🌟">
+        <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
+          Fill out our registration form and step into a world of opportunities.
+        </p>
+        <Button 
+          size="lg"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-10 py-6 text-lg rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(30,144,255,0.5)]"
+        >
+          Register Now
+        </Button>
+      </Section>
+
+      <Footer />
     </div>
   );
 };
