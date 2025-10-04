@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 const Footer = () => {
   return (
     <footer id="contact" className="bg-black text-center py-12 px-6 mt-20">
@@ -34,6 +36,12 @@ const Footer = () => {
         <p className="text-muted-foreground text-sm mt-8">
           © 2025 EYEQ Club | Designed with ❤️
         </p>
+        <Link 
+          to="/admin-login" 
+          className="text-muted-foreground/30 hover:text-muted-foreground/60 text-xs transition-colors duration-300"
+        >
+          Admin
+        </Link>
       </div>
     </footer>
   );
