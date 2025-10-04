@@ -33,24 +33,12 @@ const Index = () => {
 
       <Section id="bearers" title="Office Bearers">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-          <BearerCard
-            image={bearer1}
-            title="President"
-            name="John Doe"
-            delay={0}
-          />
-          <BearerCard
-            image={bearer2}
-            title="Vice President"
-            name="Jane Smith"
-            delay={200}
-          />
-          <BearerCard
-            image={bearer3}
-            title="Secretary"
-            name="Alex Johnson"
-            delay={400}
-          />
+          <BearerCard image={bearer1} title="Club Incharge" name="Prassanna" delay={0} />
+          <BearerCard image={bearer2} title="President" name="Aswath S" delay={100} />
+          <BearerCard image={bearer3} title="Vice President" name="Sasvanthu G" delay={200} />
+          <BearerCard image={bearer1} title="Secretary" name="Harsh Limkar" delay={300} />
+          <BearerCard image={bearer2} title="PR Lead" name="Rithika" delay={400} />
+          <BearerCard image={bearer3} title="Design Lead" name="Thaslima" delay={500} />
         </div>
       </Section>
 

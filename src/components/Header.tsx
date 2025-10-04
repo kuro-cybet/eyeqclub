@@ -38,15 +38,22 @@ const Header = () => {
           }`}
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         />
-        <nav className="flex gap-8">
-          {['about', 'proposal', 'bearers', 'updates', 'contact'].map((item) => (
-            <button
-              key={item}
-              onClick={() => scrollToSection(item)}
-              className="text-foreground hover:text-muted-foreground transition-colors duration-300 font-medium capitalize"
+        <nav className="flex gap-6 items-center">
+          {[
+            { path: '/', label: 'Home' },
+            { path: '/about', label: 'About' },
+            { path: '/projects', label: 'Projects' },
+            { path: '/leaderboard', label: 'Leaderboard' },
+            { path: '/events', label: 'Events' },
+            { path: '/vibe-coding', label: 'Tools' },
+          ].map((item) => (
+            <a
+              key={item.path}
+              href={item.path}
+              className="text-foreground hover:text-primary transition-colors duration-300 font-medium"
             >
-              {item}
-            </button>
+              {item.label}
+            </a>
           ))}
         </nav>
       </div>
