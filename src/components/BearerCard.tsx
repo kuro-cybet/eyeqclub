@@ -44,11 +44,6 @@ const BearerCard = ({ image, title, name, delay = 0 }: BearerCardProps) => {
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
       }`}
     >
-      <img
-        src={image}
-        alt={title}
-        className="w-28 h-28 rounded-full mx-auto mb-6 object-cover border-4 border-primary/30"
-      />
       <h3 className="text-xl font-bold text-foreground mb-2">{title}</h3>
       <p className="text-muted-foreground">{name}</p>
     </div>
