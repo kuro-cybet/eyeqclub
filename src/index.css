@@ -53,6 +53,8 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    transform-style: preserve-3d;
+    perspective: 1000px;
   }
 
   @keyframes fade-in {

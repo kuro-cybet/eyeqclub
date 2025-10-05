@@ -39,12 +39,13 @@ const Section = ({ id, title, children, className = '' }: SectionProps) => {
     <section
       id={id}
       ref={sectionRef}
-      className={`py-20 px-6 text-center transition-all duration-700 ${
+      className={`py-20 px-6 text-center transition-all duration-700 transform-gpu ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
       } ${className}`}
+      style={{ perspective: '1000px' }}
     >
-      <div className="container mx-auto max-w-6xl">
-        <h2 className="text-4xl md:text-5xl font-bold mb-8 text-foreground inline-block border-b-2 border-border pb-3">
+      <div className="container mx-auto max-w-6xl transform transition-all duration-500 hover:scale-[1.02]">
+        <h2 className="text-4xl md:text-5xl font-bold mb-8 text-foreground inline-block border-b-2 border-border pb-3 transform transition-all duration-300 hover:scale-110">
           {title}
         </h2>
         {children}
