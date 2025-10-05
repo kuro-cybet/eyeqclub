@@ -25,9 +25,9 @@ function RadialParticles({ mousePosition }: ParticlesProps) {
       positions[i * 3 + 1] = height;
       positions[i * 3 + 2] = Math.sin(angle) * radius;
       
-      // Rainbow colors
+      // Rainbow colors - brighter
       const hue = (angle / (Math.PI * 2)) + Math.random() * 0.1;
-      const color = new THREE.Color().setHSL(hue, 1, 0.6);
+      const color = new THREE.Color().setHSL(hue, 1, 0.7);
       colors[i * 3] = color.r;
       colors[i * 3 + 1] = color.g;
       colors[i * 3 + 2] = color.b;
@@ -98,10 +98,10 @@ function RadialParticles({ mousePosition }: ParticlesProps) {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.08}
+        size={0.15}
         vertexColors
         transparent
-        opacity={0.8}
+        opacity={1}
         sizeAttenuation={true}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
