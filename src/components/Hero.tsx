@@ -24,7 +24,7 @@ const Hero = () => {
 
   return (
     <section 
-      className="min-h-screen flex items-center justify-center text-center px-6 pt-20 bg-gradient-to-b from-black to-background relative overflow-hidden"
+      className="min-h-screen flex items-center justify-center text-center px-6 pt-20 relative overflow-hidden"
       style={{ perspective: '1000px' }}
     >
       <div 
