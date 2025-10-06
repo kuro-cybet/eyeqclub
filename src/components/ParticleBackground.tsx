@@ -6,105 +6,140 @@ interface ParticlesProps {
   mousePosition: { x: number; y: number };
 }
 
-function RadialParticles({ mousePosition }: ParticlesProps) {
+function NetworkParticles({ mousePosition }: ParticlesProps) {
   const pointsRef = useRef<THREE.Points>(null);
-  const count = 3000;
+  const linesRef = useRef<THREE.LineSegments>(null);
+  const count = 150;
+  const maxDistance = 4;
   
-  const { positions, colors, speeds } = useMemo(() => {
+  const { positions, colors, velocities } = useMemo(() => {
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
-    const speeds = new Float32Array(count);
+    const velocities = new Float32Array(count * 3);
     
     for (let i = 0; i < count; i++) {
-      // Create vertical data streams
-      const x = (Math.random() - 0.5) * 30;
-      const y = Math.random() * 20 - 10;
-      const z = (Math.random() - 0.5) * 20;
+      // Distributed particles in 3D space
+      positions[i * 3] = (Math.random() - 0.5) * 40;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 40;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 30;
       
-      positions[i * 3] = x;
-      positions[i * 3 + 1] = y;
-      positions[i * 3 + 2] = z;
-      
-      // Data stream colors - cyan, green, blue (Matrix/cyberpunk theme)
-      const colorChoice = Math.random();
-      let color;
-      if (colorChoice < 0.5) {
-        // Cyan/Electric blue
-        color = new THREE.Color().setHSL(0.5, 1, 0.6 + Math.random() * 0.2);
-      } else if (colorChoice < 0.8) {
-        // Matrix green
-        color = new THREE.Color().setHSL(0.33, 1, 0.5 + Math.random() * 0.3);
-      } else {
-        // Bright blue
-        color = new THREE.Color().setHSL(0.6, 1, 0.6 + Math.random() * 0.2);
-      }
-      
+      // Blue/cyan color scheme like the reference
+      const color = new THREE.Color().setHSL(0.55 + Math.random() * 0.1, 0.8, 0.6);
       colors[i * 3] = color.r;
       colors[i * 3 + 1] = color.g;
       colors[i * 3 + 2] = color.b;
       
-      speeds[i] = Math.random() * 0.5 + 0.3;
+      // Random velocities
+      velocities[i * 3] = (Math.random() - 0.5) * 0.02;
+      velocities[i * 3 + 1] = (Math.random() - 0.5) * 0.02;
+      velocities[i * 3 + 2] = (Math.random() - 0.5) * 0.02;
     }
     
-    return { positions, colors, speeds };
+    return { positions, colors, velocities };
   }, []);
 
   useFrame((state) => {
-    if (!pointsRef.current) return;
+    if (!pointsRef.current || !linesRef.current) return;
     
-    const time = state.clock.getElapsedTime();
     const positions = pointsRef.current.geometry.attributes.position.array as Float32Array;
+    const linePositions: number[] = [];
+    const lineColors: number[] = [];
     
+    // Update particle positions with mouse influence
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
       
-      // Data stream falling effect
-      positions[i3 + 1] -= speeds[i] * 0.05;
+      // Apply velocities
+      positions[i3] += velocities[i3];
+      positions[i3 + 1] += velocities[i3 + 1];
+      positions[i3 + 2] += velocities[i3 + 2];
       
-      // Add slight horizontal drift with mouse influence
-      const mouseInfluenceX = mousePosition.x * 0.3;
-      positions[i3] += Math.sin(time + i * 0.1) * 0.01 + mouseInfluenceX * 0.01;
+      // Mouse influence
+      positions[i3] += mousePosition.x * 0.01;
+      positions[i3 + 1] += mousePosition.y * 0.01;
       
-      // Reset particles that fall too low
-      if (positions[i3 + 1] < -10) {
-        positions[i3 + 1] = 10;
-        positions[i3] = (Math.random() - 0.5) * 30;
-        positions[i3 + 2] = (Math.random() - 0.5) * 20;
+      // Boundary wrapping
+      if (Math.abs(positions[i3]) > 20) velocities[i3] *= -1;
+      if (Math.abs(positions[i3 + 1]) > 20) velocities[i3 + 1] *= -1;
+      if (Math.abs(positions[i3 + 2]) > 15) velocities[i3 + 2] *= -1;
+    }
+    
+    // Create connections between nearby particles
+    for (let i = 0; i < count; i++) {
+      for (let j = i + 1; j < count; j++) {
+        const dx = positions[i * 3] - positions[j * 3];
+        const dy = positions[i * 3 + 1] - positions[j * 3 + 1];
+        const dz = positions[i * 3 + 2] - positions[j * 3 + 2];
+        const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        
+        if (distance < maxDistance) {
+          // Add line
+          linePositions.push(
+            positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2],
+            positions[j * 3], positions[j * 3 + 1], positions[j * 3 + 2]
+          );
+          
+          // Line opacity based on distance
+          const alpha = 1 - (distance / maxDistance);
+          const color = new THREE.Color().setHSL(0.55, 0.8, 0.6);
+          lineColors.push(color.r, color.g, color.b, alpha);
+          lineColors.push(color.r, color.g, color.b, alpha);
+        }
       }
     }
     
     pointsRef.current.geometry.attributes.position.needsUpdate = true;
     
-    // Subtle rotation for depth
-    pointsRef.current.rotation.y = Math.sin(time * 0.1) * 0.1;
+    // Update lines
+    const lineGeometry = new THREE.BufferGeometry();
+    lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+    lineGeometry.setAttribute('color', new THREE.Float32BufferAttribute(lineColors, 4));
+    linesRef.current.geometry.dispose();
+    linesRef.current.geometry = lineGeometry;
+    
+    // Gentle rotation
+    if (pointsRef.current.parent) {
+      pointsRef.current.parent.rotation.y += 0.0005;
+    }
   });
 
   return (
-    <points ref={pointsRef}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={count}
-          array={positions}
-          itemSize={3}
+    <group>
+      <points ref={pointsRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={count}
+            array={positions}
+            itemSize={3}
+          />
+          <bufferAttribute
+            attach="attributes-color"
+            count={count}
+            array={colors}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <pointsMaterial
+          size={0.15}
+          vertexColors
+          transparent
+          opacity={0.9}
+          sizeAttenuation={true}
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
         />
-        <bufferAttribute
-          attach="attributes-color"
-          count={count}
-          array={colors}
-          itemSize={3}
+      </points>
+      <lineSegments ref={linesRef}>
+        <bufferGeometry />
+        <lineBasicMaterial
+          vertexColors
+          transparent
+          opacity={0.3}
+          blending={THREE.AdditiveBlending}
         />
-      </bufferGeometry>
-      <pointsMaterial
-        size={0.12}
-        vertexColors
-        transparent
-        opacity={0.9}
-        sizeAttenuation={true}
-        blending={THREE.AdditiveBlending}
-        depthWrite={false}
-      />
-    </points>
+      </lineSegments>
+    </group>
   );
 }
 
@@ -121,14 +156,31 @@ const ParticleBackground = () => {
   return (
     <div 
       className="fixed inset-0 -z-10"
-      style={{ background: 'linear-gradient(180deg, #000000 0%, #001a1a 50%, #000d0d 100%)' }}
       onMouseMove={handleMouseMove}
     >
-      <Canvas
-        camera={{ position: [0, 0, 12], fov: 75 }}
-        style={{ background: 'transparent' }}
+      {/* Video background */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover opacity-40"
+        style={{ filter: 'brightness(0.4)' }}
       >
-        <RadialParticles mousePosition={mousePosition} />
+        <source src="/bg.mp4" type="video/mp4" />
+      </video>
+      
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80" />
+      
+      {/* 3D Network particles */}
+      <Canvas
+        camera={{ position: [0, 0, 20], fov: 75 }}
+        style={{ background: 'transparent' }}
+        className="absolute inset-0"
+      >
+        <NetworkParticles mousePosition={mousePosition} />
+        <ambientLight intensity={0.5} />
       </Canvas>
     </div>
   );

@@ -63,16 +63,43 @@ const BearerCard = ({ image, title, name, delay = 0 }: BearerCardProps) => {
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={`bg-card/80 backdrop-blur-sm rounded-xl p-8 text-center transition-all duration-500 hover:bg-card hover:shadow-[0_0_40px_rgba(30,144,255,0.3)] transform-gpu cursor-pointer ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+      className={`relative overflow-hidden rounded-xl bg-card/40 backdrop-blur-sm border border-primary/20 p-6 transition-all duration-1000 transform-gpu ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'
       }`}
       style={{
-        transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${tilt.x !== 0 || tilt.y !== 0 ? 1.05 : 1})`,
-        transition: 'transform 0.1s ease-out',
+        transform: `perspective(1500px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) translateZ(${isVisible ? 50 : 0}px) scale(${isVisible ? 1 : 0.8})`,
+        transitionDelay: `${delay}ms`,
+        boxShadow: `0 20px 60px -15px rgba(59, 130, 246, 0.4), 0 0 40px rgba(59, 130, 246, 0.2)`,
+        transformStyle: 'preserve-3d',
       }}
     >
-      <h3 className="text-xl font-bold text-foreground mb-2">{title}</h3>
-      <p className="text-muted-foreground">{name}</p>
+      <div 
+        className="relative h-48 mb-4 overflow-hidden rounded-lg"
+        style={{ transform: 'translateZ(30px)' }}
+      >
+        <img 
+          src={image} 
+          alt={name} 
+          className="w-full h-full object-cover transform transition-transform duration-500 hover:scale-125" 
+          style={{ filter: 'brightness(0.9)' }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
+      </div>
+      <h3 
+        className="text-xl font-semibold text-foreground mb-2"
+        style={{ 
+          transform: 'translateZ(20px)',
+          textShadow: '0 0 20px rgba(59, 130, 246, 0.4)'
+        }}
+      >
+        {title}
+      </h3>
+      <p 
+        className="text-muted-foreground"
+        style={{ transform: 'translateZ(15px)' }}
+      >
+        {name}
+      </p>
     </div>
   );
 };

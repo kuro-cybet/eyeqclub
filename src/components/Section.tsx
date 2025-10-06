@@ -39,16 +39,35 @@ const Section = ({ id, title, children, className = '' }: SectionProps) => {
     <section
       id={id}
       ref={sectionRef}
-      className={`py-20 px-6 text-center transition-all duration-700 transform-gpu ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+      className={`py-20 px-6 text-center transition-all duration-1000 transform-gpu ${
+        isVisible ? 'opacity-100 translate-y-0 translate-z-0' : 'opacity-0 translate-y-20'
       } ${className}`}
-      style={{ perspective: '1000px' }}
+      style={{ 
+        perspective: '2000px',
+        transformStyle: 'preserve-3d',
+        transform: isVisible ? 'translateZ(0)' : 'translateZ(-200px)',
+      }}
     >
-      <div className="container mx-auto max-w-6xl transform transition-all duration-500 hover:scale-[1.02]">
-        <h2 className="text-4xl md:text-5xl font-bold mb-8 text-foreground inline-block border-b-2 border-border pb-3 transform transition-all duration-300 hover:scale-110">
+      <div 
+        className="container mx-auto max-w-6xl transform transition-all duration-700 hover:scale-[1.03]"
+        style={{ 
+          transformStyle: 'preserve-3d',
+          transform: isVisible ? 'rotateX(0deg) translateZ(50px)' : 'rotateX(-15deg) translateZ(0)',
+        }}
+      >
+        <h2 
+          className="text-4xl md:text-5xl font-bold mb-8 text-foreground inline-block border-b-2 border-primary pb-3 transform transition-all duration-500 hover:scale-110"
+          style={{
+            textShadow: '0 0 30px rgba(59, 130, 246, 0.5)',
+            transformStyle: 'preserve-3d',
+            transform: 'translateZ(30px)',
+          }}
+        >
           {title}
         </h2>
-        {children}
+        <div style={{ transformStyle: 'preserve-3d', transform: 'translateZ(20px)' }}>
+          {children}
+        </div>
       </div>
     </section>
   );
