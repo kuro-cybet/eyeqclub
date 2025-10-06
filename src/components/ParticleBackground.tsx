@@ -16,23 +16,34 @@ function RadialParticles({ mousePosition }: ParticlesProps) {
     const speeds = new Float32Array(count);
     
     for (let i = 0; i < count; i++) {
-      // Create particles radiating from center
-      const angle = Math.random() * Math.PI * 2;
-      const radius = Math.random() * 15;
-      const height = (Math.random() - 0.5) * 8;
+      // Create vertical data streams
+      const x = (Math.random() - 0.5) * 30;
+      const y = Math.random() * 20 - 10;
+      const z = (Math.random() - 0.5) * 20;
       
-      positions[i * 3] = Math.cos(angle) * radius;
-      positions[i * 3 + 1] = height;
-      positions[i * 3 + 2] = Math.sin(angle) * radius;
+      positions[i * 3] = x;
+      positions[i * 3 + 1] = y;
+      positions[i * 3 + 2] = z;
       
-      // Rainbow colors - brighter
-      const hue = (angle / (Math.PI * 2)) + Math.random() * 0.1;
-      const color = new THREE.Color().setHSL(hue, 1, 0.7);
+      // Data stream colors - cyan, green, blue (Matrix/cyberpunk theme)
+      const colorChoice = Math.random();
+      let color;
+      if (colorChoice < 0.5) {
+        // Cyan/Electric blue
+        color = new THREE.Color().setHSL(0.5, 1, 0.6 + Math.random() * 0.2);
+      } else if (colorChoice < 0.8) {
+        // Matrix green
+        color = new THREE.Color().setHSL(0.33, 1, 0.5 + Math.random() * 0.3);
+      } else {
+        // Bright blue
+        color = new THREE.Color().setHSL(0.6, 1, 0.6 + Math.random() * 0.2);
+      }
+      
       colors[i * 3] = color.r;
       colors[i * 3 + 1] = color.g;
       colors[i * 3 + 2] = color.b;
       
-      speeds[i] = Math.random() * 0.5 + 0.5;
+      speeds[i] = Math.random() * 0.5 + 0.3;
     }
     
     return { positions, colors, speeds };
@@ -47,38 +58,25 @@ function RadialParticles({ mousePosition }: ParticlesProps) {
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
       
-      // Get angle and current radius
-      const x = positions[i3];
-      const z = positions[i3 + 2];
-      const angle = Math.atan2(z, x);
-      let radius = Math.sqrt(x * x + z * z);
+      // Data stream falling effect
+      positions[i3 + 1] -= speeds[i] * 0.05;
       
-      // Radiate outward
-      radius += speeds[i] * 0.02;
+      // Add slight horizontal drift with mouse influence
+      const mouseInfluenceX = mousePosition.x * 0.3;
+      positions[i3] += Math.sin(time + i * 0.1) * 0.01 + mouseInfluenceX * 0.01;
       
-      // Reset if too far
-      if (radius > 15) {
-        radius = 0.5;
-      }
-      
-      // Update position with mouse influence
-      const mouseInfluenceX = mousePosition.x * 0.5;
-      const mouseInfluenceY = mousePosition.y * 0.5;
-      
-      positions[i3] = Math.cos(angle + mouseInfluenceX * 0.01) * radius;
-      positions[i3 + 2] = Math.sin(angle + mouseInfluenceX * 0.01) * radius;
-      positions[i3 + 1] += Math.sin(time * 0.5 + i * 0.01) * 0.005 + mouseInfluenceY * 0.005;
-      
-      // Keep height in bounds
-      if (Math.abs(positions[i3 + 1]) > 4) {
-        positions[i3 + 1] = (Math.random() - 0.5) * 8;
+      // Reset particles that fall too low
+      if (positions[i3 + 1] < -10) {
+        positions[i3 + 1] = 10;
+        positions[i3] = (Math.random() - 0.5) * 30;
+        positions[i3 + 2] = (Math.random() - 0.5) * 20;
       }
     }
     
     pointsRef.current.geometry.attributes.position.needsUpdate = true;
     
-    // Slow rotation
-    pointsRef.current.rotation.y = time * 0.05;
+    // Subtle rotation for depth
+    pointsRef.current.rotation.y = Math.sin(time * 0.1) * 0.1;
   });
 
   return (
@@ -98,10 +96,10 @@ function RadialParticles({ mousePosition }: ParticlesProps) {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.15}
+        size={0.12}
         vertexColors
         transparent
-        opacity={1}
+        opacity={0.9}
         sizeAttenuation={true}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
