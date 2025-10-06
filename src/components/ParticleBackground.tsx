@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -109,25 +109,26 @@ function RadialParticles({ mousePosition }: ParticlesProps) {
 }
 
 const ParticleBackground = () => {
-  const mousePosition = useRef({ x: 0, y: 0 });
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  const handleMouseMove = (event: MouseEvent) => {
-    mousePosition.current = {
+  const handleMouseMove = (event: React.MouseEvent) => {
+    setMousePosition({
       x: (event.clientX / window.innerWidth) * 2 - 1,
       y: -(event.clientY / window.innerHeight) * 2 + 1,
-    };
+    });
   };
 
   return (
     <div 
-      className="fixed inset-0 -z-10 bg-black"
-      onMouseMove={handleMouseMove as any}
+      className="fixed inset-0 -z-10"
+      style={{ background: 'linear-gradient(180deg, #000000 0%, #001a1a 50%, #000d0d 100%)' }}
+      onMouseMove={handleMouseMove}
     >
       <Canvas
-        camera={{ position: [0, 0, 8], fov: 60 }}
-        style={{ background: 'black' }}
+        camera={{ position: [0, 0, 12], fov: 75 }}
+        style={{ background: 'transparent' }}
       >
-        <RadialParticles mousePosition={mousePosition.current} />
+        <RadialParticles mousePosition={mousePosition} />
       </Canvas>
     </div>
   );
