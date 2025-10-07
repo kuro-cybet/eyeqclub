@@ -7,7 +7,7 @@ const Footer = () => {
         <h2 className="text-3xl font-bold text-foreground mb-6">Connect With Us</h2>
         <div className="flex justify-center items-center gap-6 text-lg">
           <a
-            href="https://linkedin.com/in/yourprofile"
+            href="https://www.linkedin.com/company/eyeq-simats/about"
             target="_blank"
             rel="noopener noreferrer"
             className="text-foreground hover:text-primary transition-colors duration-300"
@@ -16,7 +16,7 @@ const Footer = () => {
           </a>
           <span className="text-muted-foreground">|</span>
           <a
-            href="https://instagram.com/yourprofile"
+            href="https://www.instagram.com/eyeq.simats"
             target="_blank"
             rel="noopener noreferrer"
             className="text-foreground hover:text-accent transition-colors duration-300"
@@ -25,7 +25,7 @@ const Footer = () => {
           </a>
           <span className="text-muted-foreground">|</span>
           <a
-            href="https://wa.me/91XXXXXXXXXX"
+            href="https://chat.whatsapp.com/GxFFprWNX4d8mOQJOTz7d1?mode=ems_wa_t"
             target="_blank"
             rel="noopener noreferrer"
             className="text-foreground hover:text-secondary transition-colors duration-300"
@@ -34,14 +34,8 @@ const Footer = () => {
           </a>
         </div>
         <p className="text-muted-foreground text-sm mt-8">
-          © 2025 EYEQ Club | Designed with ❤️
+          © 2025 EYEQ Club 
         </p>
-        <Link 
-          to="/admin-login" 
-          className="text-muted-foreground/30 hover:text-muted-foreground/60 text-xs transition-colors duration-300"
-        >
-          Admin
-        </Link>
       </div>
     </footer>
   );

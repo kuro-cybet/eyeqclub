@@ -1,6 +1,20 @@
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 
 const Hero = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 20;
+      const y = (e.clientY / window.innerHeight - 0.5) * 20;
+      setMousePosition({ x, y });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   const scrollToJoin = () => {
     const element = document.getElementById('join');
     if (element) {
@@ -9,18 +23,39 @@ const Hero = () => {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center text-center px-6 pt-20 bg-gradient-to-b from-black to-background">
-      <div className="max-w-4xl mx-auto space-y-6 animate-fade-in">
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-pulse-slow">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6">
+      <div 
+        className="text-center transform-gpu transition-transform duration-500 ease-out"
+        style={{
+          transform: `perspective(2000px) rotateX(${mousePosition.y * 0.3}deg) rotateY(${mousePosition.x * 0.3}deg) translateZ(100px)`,
+          transformStyle: 'preserve-3d',
+        }}
+      >
+        <h1 
+          className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-pulse-slow"
+          style={{
+            transform: `translateZ(${80 + Math.abs(mousePosition.x)}px)`,
+            textShadow: '0 0 60px rgba(59, 130, 246, 0.8), 0 0 100px rgba(59, 130, 246, 0.4)',
+          }}
+        >
           Welcome to EYEQ Club
         </h1>
-        <p className="text-xl md:text-2xl text-muted-foreground mb-8">
+        <p 
+          className="text-xl md:text-2xl text-muted-foreground mb-8 transform transition-transform duration-500"
+          style={{
+            transform: `translateZ(${50 + Math.abs(mousePosition.y)}px)`,
+          }}
+        >
           Empowering Young Engineers with Quality
         </p>
-        <Button 
+        <Button
           onClick={scrollToJoin}
           size="lg"
-          className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-8 py-6 text-lg rounded-full transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(30,144,255,0.5)]"
+          className="text-lg px-8 py-6 transform transition-all duration-500 hover:scale-110 hover:shadow-2xl hover:shadow-primary/50 relative"
+          style={{
+            transform: `translateZ(${100 + Math.abs(mousePosition.x) * 2}px) scale(${1 + Math.abs(mousePosition.x) * 0.002})`,
+            boxShadow: '0 0 40px rgba(59, 130, 246, 0.6)',
+          }}
         >
           Join Us
         </Button>
