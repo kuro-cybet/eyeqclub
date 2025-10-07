@@ -15,9 +15,10 @@ const Hyperspeed = () => {
     camera.position.set(0, 3, 8);
     camera.lookAt(0, 0, -50);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setClearColor(0x000000, 1);
     mount.appendChild(renderer.domElement);
 
     // Lighting
@@ -31,26 +32,28 @@ const Hyperspeed = () => {
     const roadLength = 400;
     const geometry = new THREE.PlaneGeometry(roadWidth, roadLength, 10, 10);
     const material = new THREE.MeshStandardMaterial({
-      color: 0x111111,
+      color: 0x0a0a0a,
+      metalness: 0.8,
+      roughness: 0.2,
       side: THREE.DoubleSide,
     });
     const road = new THREE.Mesh(geometry, material);
     road.rotation.x = -Math.PI / 2;
+    road.position.z = -roadLength / 4;
     scene.add(road);
 
     // Light poles
-    const lightGeometry = new THREE.BoxGeometry(0.1, 1.5, 0.1);
-    const lightMaterial = new THREE.MeshBasicMaterial({ color: 0x00ffff });
+    const lightGeometry = new THREE.BoxGeometry(0.2, 2, 0.2);
     const lights: THREE.Mesh[] = [];
-    for (let i = 0; i < 80; i++) {
-      const left = new THREE.Mesh(lightGeometry, lightMaterial.clone());
-      const right = new THREE.Mesh(lightGeometry, lightMaterial.clone());
+    for (let i = 0; i < 100; i++) {
+      const left = new THREE.Mesh(lightGeometry, new THREE.MeshBasicMaterial());
+      const right = new THREE.Mesh(lightGeometry, new THREE.MeshBasicMaterial());
       const z = -Math.random() * roadLength;
-      const color = new THREE.Color(Math.random(), Math.random(), 1);
+      const color = new THREE.Color().setHSL(Math.random(), 1, 0.6);
       (left.material as THREE.MeshBasicMaterial).color = color;
       (right.material as THREE.MeshBasicMaterial).color = color;
-      left.position.set(-roadWidth / 2 - 1, 0.75, z);
-      right.position.set(roadWidth / 2 + 1, 0.75, z);
+      left.position.set(-roadWidth / 2 - 1, 1, z);
+      right.position.set(roadWidth / 2 + 1, 1, z);
       scene.add(left, right);
       lights.push(left, right);
     }
