@@ -12,7 +12,8 @@ const Hyperspeed = () => {
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 2, 5);
+    camera.position.set(0, 3, 8);
+    camera.lookAt(0, 0, -50);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -64,12 +65,14 @@ const Hyperspeed = () => {
     composer.addPass(effectPass);
 
     // Animation loop
-    const speed = 1.5;
+    const speed = 3.5;
     const animate = () => {
       requestAnimationFrame(animate);
       lights.forEach((light) => {
         light.position.z += speed;
-        if (light.position.z > roadLength / 2) light.position.z = -roadLength / 2;
+        if (light.position.z > camera.position.z + 10) {
+          light.position.z = -roadLength / 2;
+        }
       });
       composer.render();
     };
