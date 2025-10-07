@@ -64,7 +64,7 @@ const Hyperspeed = () => {
     composer.addPass(effectPass);
 
     // Animation loop
-    let speed = 1.5;
+    const speed = 1.5;
     const animate = () => {
       requestAnimationFrame(animate);
       lights.forEach((light) => {

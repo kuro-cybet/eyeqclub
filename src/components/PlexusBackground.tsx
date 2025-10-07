@@ -75,7 +75,7 @@ const PlexusBackground = () => {
       opacity: 0.3,
     });
     let linesGeometry = new THREE.BufferGeometry();
-    let lines = new THREE.LineSegments(linesGeometry, linesMaterial);
+    const lines = new THREE.LineSegments(linesGeometry, linesMaterial);
     scene.add(lines);
 
     // Interaction state
