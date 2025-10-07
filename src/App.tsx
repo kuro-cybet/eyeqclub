@@ -12,12 +12,14 @@ import Leaderboard from "./pages/Leaderboard";
 import Events from "./pages/Events";
 import VibeCoding from "./pages/VibeCoding";
 import NotFound from "./pages/NotFound";
+import PlexusBackground from "@/components/PlexusBackground";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
+      <PlexusBackground />
       <Toaster />
       <Sonner />
       <BrowserRouter>
