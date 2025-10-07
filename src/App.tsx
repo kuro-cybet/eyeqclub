@@ -14,7 +14,7 @@ import Leaderboard from "./pages/Leaderboard";
 import Events from "./pages/Events";
 import VibeCoding from "./pages/VibeCoding";
 import NotFound from "./pages/NotFound";
-import PlexusBackground from "./components/PlexusBackground";
+// removed PlexusBackground background layer
 
 const queryClient = new QueryClient();
 
@@ -25,7 +25,6 @@ const App: React.FC = () => {
         <Toaster />
         <Sonner />
         <div className="relative min-h-screen bg-transparent overflow-hidden">
-          <PlexusBackground />
           <BrowserRouter>
             <div className="relative z-10">
               {/* ✅ Marquee / Navbar / Content */}
