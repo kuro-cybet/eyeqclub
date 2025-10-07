@@ -11,21 +11,21 @@ const Hyperspeed = () => {
     if (!mount) return;
 
     const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x000000, 1, 100);
+    
     const camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 3, 8);
-    camera.lookAt(0, 0, -50);
+    camera.position.set(0, 2, 5);
+    camera.lookAt(0, 0, -100);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setClearColor(0x000000, 1);
     mount.appendChild(renderer.domElement);
 
     // Lighting
-    const ambient = new THREE.AmbientLight(0xffffff, 0.4);
-    const dir = new THREE.DirectionalLight(0xffffff, 1);
-    dir.position.set(0, 5, 10);
-    scene.add(ambient, dir);
+    const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambient);
 
     // Road base
     const roadWidth = 10;
@@ -42,19 +42,31 @@ const Hyperspeed = () => {
     road.position.z = -roadLength / 4;
     scene.add(road);
 
-    // Light poles
-    const lightGeometry = new THREE.BoxGeometry(0.2, 2, 0.2);
+    // Light poles with glow
+    const lightGeometry = new THREE.BoxGeometry(0.3, 3, 0.3);
     const lights: THREE.Mesh[] = [];
-    for (let i = 0; i < 100; i++) {
+    
+    for (let i = 0; i < 120; i++) {
       const left = new THREE.Mesh(lightGeometry, new THREE.MeshBasicMaterial());
       const right = new THREE.Mesh(lightGeometry, new THREE.MeshBasicMaterial());
-      const z = -Math.random() * roadLength;
-      const color = new THREE.Color().setHSL(Math.random(), 1, 0.6);
+      
+      const z = -i * 3 - Math.random() * 50;
+      const hue = Math.random();
+      const color = new THREE.Color().setHSL(hue, 1, 0.5);
+      
       (left.material as THREE.MeshBasicMaterial).color = color;
       (right.material as THREE.MeshBasicMaterial).color = color;
-      left.position.set(-roadWidth / 2 - 1, 1, z);
-      right.position.set(roadWidth / 2 + 1, 1, z);
-      scene.add(left, right);
+      
+      left.position.set(-roadWidth / 2 - 2, 1.5, z);
+      right.position.set(roadWidth / 2 + 2, 1.5, z);
+      
+      // Add point lights for glow
+      const glowLeft = new THREE.PointLight(color, 2, 10);
+      const glowRight = new THREE.PointLight(color, 2, 10);
+      glowLeft.position.copy(left.position);
+      glowRight.position.copy(right.position);
+      
+      scene.add(left, right, glowLeft, glowRight);
       lights.push(left, right);
     }
 
@@ -68,15 +80,17 @@ const Hyperspeed = () => {
     composer.addPass(effectPass);
 
     // Animation loop
-    const speed = 3.5;
+    const speed = 4;
     const animate = () => {
       requestAnimationFrame(animate);
+      
       lights.forEach((light) => {
         light.position.z += speed;
-        if (light.position.z > camera.position.z + 10) {
-          light.position.z = -roadLength / 2;
+        if (light.position.z > camera.position.z + 20) {
+          light.position.z = -300;
         }
       });
+      
       composer.render();
     };
     animate();
