@@ -4,7 +4,6 @@ import Hero from '@/components/Hero';
 import Section from '@/components/Section';
 import BearerCard from '@/components/BearerCard';
 import Footer from '@/components/Footer';
-import ParticleBackground from '@/components/ParticleBackground';
 import { Button } from '@/components/ui/button';
 
 import bearer1 from '@/assets/bearer1.jpg';
@@ -14,7 +13,6 @@ import bearer3 from '@/assets/bearer3.jpg';
 const Index = () => {
   return (
     <div className="min-h-screen bg-background relative">
-      <ParticleBackground />
       <MarqueeBanner />
       <Header />
       <Hero />

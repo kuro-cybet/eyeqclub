@@ -14,7 +14,7 @@ import Leaderboard from "./pages/Leaderboard";
 import Events from "./pages/Events";
 import VibeCoding from "./pages/VibeCoding";
 import NotFound from "./pages/NotFound";
-import Hyperspeed from "./components/Hyperspeed";
+import PlexusBackground from "./components/PlexusBackground";
 
 const queryClient = new QueryClient();
 
@@ -25,7 +25,7 @@ const App: React.FC = () => {
         <Toaster />
         <Sonner />
         <div className="relative min-h-screen bg-transparent overflow-hidden">
-          <Hyperspeed />
+          <PlexusBackground />
           <BrowserRouter>
             <div className="relative z-10">
               {/* ✅ Marquee / Navbar / Content */}
