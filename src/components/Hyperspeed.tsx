@@ -109,7 +109,18 @@ const Hyperspeed = () => {
     };
   }, []);
 
-  return <div id="Lights" ref={mountRef}></div>;
+  return <div id="Lights" ref={mountRef}>
+    <video
+      autoPlay
+      loop
+      muted
+      playsInline
+      className="absolute inset-0 w-full h-full object-cover"
+      style={{ opacity: 0.6 }}
+    >
+      <source src="/hyper_bg.mp4" type="video/mp4" />
+    </video>
+  </div>;
 };
 
 export default Hyperspeed;
