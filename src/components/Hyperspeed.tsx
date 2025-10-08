@@ -116,9 +116,9 @@ const Hyperspeed = () => {
       muted
       playsInline
       className="absolute inset-0 w-full h-full object-cover"
-      style={{ opacity: 0.6 }}
+      style={{ opacity: 0.8 }}
     >
-      <source src="/hyper_bg.mp4" type="video/mp4" />
+      <source src="/final.mp4" type="video/mp4" />
     </video>
   </div>;
 };
