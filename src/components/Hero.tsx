@@ -35,7 +35,7 @@ const Hero = () => {
           className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-pulse-slow"
           style={{
             transform: `translateZ(${80 + Math.abs(mousePosition.x)}px)`,
-            textShadow: '0 0 60px rgba(59, 130, 246, 0.8), 0 0 100px rgba(59, 130, 246, 0.4)',
+            textShadow: '0 0 30px rgba(255, 255, 255, 0.15), 0 0 50px rgba(59, 130, 246, 0.1)',
           }}
         >
           Welcome to EYEQ Club
@@ -51,10 +51,10 @@ const Hero = () => {
         <Button
           onClick={scrollToJoin}
           size="lg"
-          className="text-lg px-8 py-6 transform transition-all duration-500 hover:scale-110 hover:shadow-2xl hover:shadow-primary/50 relative"
+          className="text-lg px-8 py-6 transform transition-all duration-500 hover:scale-110 hover:shadow-2xl hover:shadow-primary/20 relative"
           style={{
             transform: `translateZ(${100 + Math.abs(mousePosition.x) * 2}px) scale(${1 + Math.abs(mousePosition.x) * 0.002})`,
-            boxShadow: '0 0 40px rgba(59, 130, 246, 0.6)',
+            boxShadow: '0 0 20px rgba(59, 130, 246, 0.2)',
           }}
         >
           Join Us
