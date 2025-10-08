@@ -32,16 +32,16 @@ const Hero = () => {
         }}
       >
         <h1 
-          className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-pulse-slow"
+          className="text-6xl md:text-8xl font-bold mb-6 text-white animate-pulse-slow"
           style={{
             transform: `translateZ(${80 + Math.abs(mousePosition.x)}px)`,
-            textShadow: '0 0 30px rgba(255, 255, 255, 0.15), 0 0 50px rgba(59, 130, 246, 0.1)',
+            textShadow: '0 0 30px rgba(255, 255, 255, 0.15), 0 0 50px rgba(255, 255, 255, 0.1)',
           }}
         >
           Welcome to EYEQ Club
         </h1>
         <p 
-          className="text-xl md:text-2xl text-muted-foreground mb-8 transform transition-transform duration-500"
+          className="text-xl md:text-2xl text-gray-300 mb-8 transform transition-transform duration-500"
           style={{
             transform: `translateZ(${50 + Math.abs(mousePosition.y)}px)`,
           }}
